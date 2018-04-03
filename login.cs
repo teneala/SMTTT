@@ -37,28 +37,47 @@ public Form2()
 		{
 			string username;
 			string password;
+			bool isConn; 
 
 			username = usernametb.Text;
 			password = passwordtb.Text; 
 
 			//Connects to the database
-			string connString = "Server=simplemodes.cyqmaqudzup4.us-east-2.rds.amazonaws.com;Port=3306;Database=SimpleModes;password=UsmStudent"; 
+			string connString = "Server=simplemodes.cyqmaqudzup4.us-east-2.rds.amazonaws.com;Port=3307;Database=SimpleModes;Uid=SimpleModes;password=simplemodes;"; 
 			MySqlConnection conn = new MySqlConnection(connString);
 			MySqlCommand command = conn.CreateCommand();
+			command = new MySqlCommand("Select " + username + " from customer where password = " + password);
+
+			
 
 			try
 			{
-				//checks to see if the username and password appear in the accounttable
-				command.CommandText = "Select" + username + " from customer where password = " + password;
+				conn = new MySqlConnection(connString);
+				conn.Open();
+				command.ExecuteReader();
+				MySqlDataReader dr = command.ExecuteReader();
+				dr.Read();
+				isConn = true;
 			}
 
 			catch
 			{
-				
-				MessageBox.Show("Either wrong password or wrong username, brudda");
-
+				MessageBox.Show("Connection failed");
 			}
 
+		
+			//try
+			//{
+			//	//checks to see if the username and password appear in the accounttable
+			//	dr.Read();				
+			//}
+
+			//catch
+			//{
+				
+			//	MessageBox.Show("Either wrong password or wrong username, brudda");
+
+			//}
 
 
 		}
